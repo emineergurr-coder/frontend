@@ -1,23 +1,30 @@
 import { useState, useEffect } from "react";
+// @ts-ignore
 import "./App.css";
-import { events } from "./data/events";
-import type { CampusEvent } from "./types/campus-event";
+import { events as initialEvents } from "./data/events";
+import { PageName } from "./types/page";
 import { searchEvents, filterByCategory, findEventById } from "./utils/filter-events";
 
-type PageName = "home" | "events" | "add" | "detail" | "update";
+import Header from "./components/layout/Header";
+import Navigation from "./components/layout/Navigation";
+import Footer from "./components/layout/Footer";
+
+import EventList from "./components/events/EventList";
+import EventFilter from "./components/events/EventFilter";
+import EventDetail from "./components/events/EventDetail";
+import EventForm from "./components/forms/EventForm";
 
 function App() {
   const [page, setPage] = useState<PageName>("home");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState<any>("");
 
   function go(next: PageName, id: string | null = null) {
     setPage(next);
     setSelectedId(id);
   }
 
-  // Slayt Adım 8 / 13: Sekme başlığını güncelleme (useEffect)
   useEffect(() => {
     document.title = `Kampüs Etkinlikleri — ${
       page === "home"
@@ -32,160 +39,74 @@ function App() {
     }`;
   }, [page]);
 
-  // Slayt Adım 9: Yaklaşan 2 etkinlik (sort + slice)
-  const upcoming = [...events]
+  const upcoming = [...initialEvents]
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, 2);
 
-  // Slayt Adım 10: Filtrelenmiş liste
   const filtered = filterByCategory(
-    searchEvents(events, searchText),
-    category as any
+    searchEvents(initialEvents, searchText),
+    category
   );
 
-  // Slayt Adım 11: Seçili etkinlik
-  const selected = selectedId ? findEventById(events, selectedId) : undefined;
-
-  // Kategori seçenekleri
-  const categories = [...new Set(events.map((e) => e.category))];
-
-  // Slayt Adım 9: renderCard fonksiyonu
-  function renderCard(event: CampusEvent) {
-    return (
-      <article className="kart" key={event.id}>
-        <h2>{event.title}</h2>
-        <p><strong>Kategori:</strong> {event.category}</p>
-        <p><strong>Tarih:</strong> {event.date} - {event.time}</p>
-        <p><strong>Mekan:</strong> {event.location}</p>
-        <button onClick={() => go("detail", event.id)}>Detayları Gör</button>
-      </article>
-    );
-  }
-
-  const menuItems: { name: PageName; label: string }[] = [
-    { name: "home", label: "Ana Sayfa" },
-    { name: "events", label: "Etkinlikler" },
-    { name: "add", label: "Etkinlik Ekle" },
-  ];
+  const selectedEvent = selectedId ? findEventById(initialEvents, selectedId) : undefined;
+  const categories = [...new Set(initialEvents.map((e) => e.category))];
 
   return (
     <>
-      <header className="site-baslik">
-        <h1>Kampüs Etkinlikleri</h1>
-        <nav className="menu">
-          {menuItems.map((item) => (
-            <a
-              key={item.name}
-              href={`#${item.name}`}
-              aria-current={page === item.name ? "page" : undefined}
-              onClick={(e) => {
-                e.preventDefault();
-                go(item.name);
-              }}
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
-      </header>
+      <Header
+        title="Kampüs Etkinlikleri"
+        text="Fakültedeki seminer, atölye ve söyleşileri tek yerden takip edin."
+      />
+      <Navigation current={page} onNavigate={(p) => go(p)} />
 
       <main>
-        {/* ANA SAYFA */}
         {page === "home" && (
-          <section className="etkinlik-listesi">
-            <h2>Yaklaşan Etkinlikler</h2>
-            <div className="liste">{upcoming.map(renderCard)}</div>
+          <section>
+            <h2>Yaklaşan 2 Etkinlik</h2>
+            <EventList
+              events={upcoming}
+              onShowDetail={(id) => go("detail", id)}
+            />
           </section>
         )}
 
-        {/* ETKİNLİKLER SAYFASI */}
         {page === "events" && (
-          <section className="etkinlik-listesi">
+          <section>
             <h2>Tüm Etkinlikler</h2>
-            <div className="filtreler">
-              <input
-                type="search"
-                placeholder="Etkinlik ara..."
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-              />
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value="">Tüm Kategoriler</option>
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="liste">
-              {filtered.length === 0 ? (
-                <p>Etkinlik bulunamadı.</p>
-              ) : (
-                filtered.map(renderCard)
-              )}
-            </div>
+            <EventFilter
+              searchText={searchText}
+              category={category}
+              categories={categories}
+              onSearchChange={setSearchText}
+              onCategoryChange={setCategory}
+            />
+            <p>{filtered.length} etkinlik listeleniyor.</p>
+            <EventList
+              events={filtered}
+              onShowDetail={(id) => go("detail", id)}
+              emptyText="Aramanıza uygun etkinlik bulunamadı."
+            />
           </section>
         )}
 
-        {/* DETAY SAYFASI */}
         {page === "detail" && (
-          <section className="detay-sayfasi">
-            {!selected ? (
-              <div>
-                <p>Etkinlik bulunamadı.</p>
-                <button onClick={() => go("events")}>Listeye Dön</button>
-              </div>
-            ) : (
-              <article className="detay">
-                <h2>{selected.title}</h2>
-                <p>{selected.description}</p>
-                <p><strong>Kategori:</strong> {selected.category}</p>
-                <p><strong>Tarih:</strong> {selected.date} - {selected.time}</p>
-                <p><strong>Mekan:</strong> {selected.location}</p>
-                <button onClick={() => go("update", selected.id)}>
-                  Bu Etkinliği Güncelle
-                </button>
-                <br />
-                <button onClick={() => go("events")}>Listeye Dön</button>
-              </article>
-            )}
-          </section>
+          <EventDetail
+            event={selectedEvent}
+            onBack={() => go("events")}
+            onEdit={(id) => go("update", id)}
+          />
         )}
 
-        {/* EKLE / GÜNCELLE SAYFASI */}
         {(page === "add" || page === "update") && (
-          <section className="form-sayfasi">
-            <h2>{page === "add" ? "Etkinlik Ekle" : "Etkinlik Güncelle"}</h2>
-            <form className="form" onSubmit={(e) => e.preventDefault()}>
-              <div>
-                <label htmlFor="title">Etkinlik Adı</label>
-                <input
-                  id="title"
-                  maxLength={80}
-                  defaultValue={selected?.title || ""}
-                />
-              </div>
-              <div>
-                <label htmlFor="description">Açıklama</label>
-                <textarea
-                  id="description"
-                  rows={5}
-                  defaultValue={selected?.description || ""}
-                />
-              </div>
-              <button type="submit">Kaydet</button>
-            </form>
-          </section>
+          <EventForm
+            mode={page}
+            initialData={selectedEvent}
+            onSubmit={() => window.scrollTo(0, 0)}
+          />
         )}
       </main>
 
-      <footer>
-        <p>&copy; Kampüs Etkinlikleri Projesi</p>
-      </footer>
+      <Footer />
     </>
   );
 }
