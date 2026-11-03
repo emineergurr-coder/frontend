@@ -1,4 +1,4 @@
-import { PageName } from "../../types/page";
+import type { PageName } from "../../types/page";
 
 interface NavigationProps {
   current: PageName;
@@ -6,23 +6,36 @@ interface NavigationProps {
 }
 
 function Navigation({ current, onNavigate }: NavigationProps) {
-  const navItems: { name: PageName; label: string }[] = [
-    { name: "home", label: "Ana Sayfa" },
-    { name: "events", label: "Etkinlikler" },
-    { name: "add", label: "Ekle" },
-  ];
-
   return (
     <nav className="menu">
-      {navItems.map((item) => (
-        <button
-          key={item.name}
-          aria-current={current === item.name ? "page" : undefined}
-          onClick={() => onNavigate(item.name)}
-        >
-          {item.label}
-        </button>
-      ))}
+      <button
+        type="button"
+        aria-current={current === "home" ? "page" : undefined}
+        onClick={() => onNavigate("home")}
+      >
+        Ana Sayfa
+      </button>
+      <button
+        type="button"
+        aria-current={current === "events" ? "page" : undefined}
+        onClick={() => onNavigate("events")}
+      >
+        Etkinlikler
+      </button>
+      <button
+        type="button"
+        aria-current={current === "admin" ? "page" : undefined}
+        onClick={() => onNavigate("admin")}
+      >
+        Yönetim
+      </button>
+      <button
+        type="button"
+        aria-current={current === "login" || current === "register" ? "page" : undefined}
+        onClick={() => onNavigate("login")}
+      >
+        Giriş
+      </button>
     </nav>
   );
 }

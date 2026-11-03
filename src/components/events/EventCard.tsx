@@ -15,7 +15,7 @@ function EventCard({ event, onShowDetail }: EventCardProps) {
       <p><strong>Mekan:</strong> {event.location}</p>
       <p><strong>Kontenjan:</strong> {event.capacity} kişi</p>
       <p>{event.description}</p>
-      <button onClick={() => onShowDetail(event.id)}>Detayları gör</button>
+    <button onClick={() => onShowDetail(event.id)}>Detayları Gör</button>
     </article>
   );
 }
