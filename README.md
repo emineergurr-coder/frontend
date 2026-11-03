@@ -1,1 +1,1 @@
-https://emineergur-frontend.vercel.app/
+https://emineergurr-frontend.vercel.app
