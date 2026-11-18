@@ -7,7 +7,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Adım 4: Health-Check Endpoint (Öğrenci No: 2311012827)
 app.get("/health", (req, res) => {
   res.json({
     status: "ok",
@@ -16,12 +15,17 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Adım 7: Event Rotaları
 app.use("/events", eventRoutes);
 
-// 404 Bulunamadı
+// 404 Eşleşmeyen Rota
 app.use((req, res) => {
   res.status(404).json({ error: { message: "Route not found" } });
+});
+
+// 500 Beklenmeyen Hata Yakalayıcı
+app.use((err, req, res, next) => {
+  console.error(err.message);
+  res.status(500).json({ error: { message: "Server error" } });
 });
 
 export default app;

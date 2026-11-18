@@ -1,6 +1,5 @@
-export const events = [
+export const seedEvents = [
   {
-    id: "event-1",
     title: "Yapay Zeka Semineri 2026",
     category: "Seminer",
     date: "2026-10-12",
@@ -9,7 +8,6 @@ export const events = [
     description: "Yapay zeka alanındaki son gelişmeler ve kariyer fırsatları."
   },
   {
-    id: "event-2",
     title: "Robotik Atölyesi",
     category: "Atölye",
     date: "2026-10-20",
@@ -18,7 +16,6 @@ export const events = [
     description: "Otonom robot yapımı ve sensör uygulamaları."
   },
   {
-    id: "event-3",
     title: "Siber Güvenlik Söyleşisi",
     category: "Söyleşi",
     date: "2026-10-27",
@@ -27,7 +24,6 @@ export const events = [
     description: "Web ve ağ güvenliği alanında uzmanlarla soru-cevap."
   },
   {
-    id: "event-4",
     title: "Web Tasarım Atölyesi",
     category: "Atölye",
     date: "2026-11-03",
@@ -36,7 +32,6 @@ export const events = [
     description: "React ve modern CSS ile web geliştirme eğitimi."
   },
   {
-    id: "event-5",
     title: "Mobil Uygulama Atölyesi",
     category: "Atölye",
     date: "2026-11-24",
@@ -45,7 +40,6 @@ export const events = [
     description: "Cross-platform mobil uygulama geliştirme temelleri."
   },
   {
-    id: "event-6",
     title: "Veri Bilimi ve Analiz Söyleşisi",
     category: "Söyleşi",
     date: "2026-12-01",
