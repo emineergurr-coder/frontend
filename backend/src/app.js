@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import eventRoutes from "./routes/event-routes.js";
+import eventRouter from "./routes/event-routes.js";
 
 const app = express();
 
@@ -8,24 +8,16 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/health", (req, res) => {
-  res.json({
-    status: "ok",
-    time: new Date().toISOString(),
-    student: "2311012827"
-  });
+  res.json({ status: "ok", student: "2311012827" });
 });
 
-app.use("/events", eventRoutes);
+app.use("/events", eventRouter);
 
-// 404 Eşleşmeyen Rota
-app.use((req, res) => {
-  res.status(404).json({ error: { message: "Route not found" } });
-});
-
-// 500 Beklenmeyen Hata Yakalayıcı
 app.use((err, req, res, next) => {
-  console.error(err.message);
-  res.status(500).json({ error: { message: "Server error" } });
+  if (err.name === "ValidationError" || err.name === "CastError") {
+    return res.status(400).json({ error: { message: err.message } });
+  }
+  res.status(500).json({ error: { message: "Internal server error" } });
 });
 
 export default app;

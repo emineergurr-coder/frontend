@@ -1,50 +1,56 @@
 export const seedEvents = [
   {
-    title: "Yapay Zeka Semineri 2026",
+    title: "Kariyer Günleri 2026",
     category: "Seminer",
-    date: "2026-10-12",
-    time: "14:00",
-    location: "A Blok Konferans Salonu",
-    description: "Yapay zeka alanındaki son gelişmeler ve kariyer fırsatları."
+    capacity: 200,
+    date: "02-12-2026",
+    time: "10:00",
+    location: "Prof. Dr. M. Lütfü Çakmakçı Kültür Merkezi",
+    description: "Sektör temsilcileriyle kariyer ve staj buluşması.",
   },
   {
     title: "Robotik Atölyesi",
     category: "Atölye",
-    date: "2026-10-20",
-    time: "10:00",
-    location: "Mühendislik Lab-2",
-    description: "Otonom robot yapımı ve sensör uygulamaları."
+    capacity: 35,
+    date: "15-10-2026",
+    time: "13:30",
+    location: "Mühendislik Fakültesi B-204",
+    description: "Temel mikrodenetleyici ve sensör uygulamaları.",
   },
   {
     title: "Siber Güvenlik Söyleşisi",
-    category: "Söyleşi",
-    date: "2026-10-27",
-    time: "15:30",
-    location: "C Blok Amfi 1",
-    description: "Web ve ağ güvenliği alanında uzmanlarla soru-cevap."
+    category: "Seminer",
+    capacity: 120,
+    date: "08-12-2026",
+    time: "15:00",
+    location: "İİBF Konferans Salonu",
+    description: "Ağ güvenliği ve sızma testleri üzerine söyleşi.",
   },
   {
     title: "Web Tasarım Atölyesi",
     category: "Atölye",
-    date: "2026-11-03",
-    time: "13:00",
-    location: "Bilgisayar Lab-4",
-    description: "React ve modern CSS ile web geliştirme eğitimi."
-  },
-  {
-    title: "Mobil Uygulama Atölyesi",
-    category: "Atölye",
-    date: "2026-11-24",
-    time: "11:00",
-    location: "Bilgisayar Lab-1",
-    description: "Cross-platform mobil uygulama geliştirme temelleri."
-  },
-  {
-    title: "Veri Bilimi ve Analiz Söyleşisi",
-    category: "Söyleşi",
-    date: "2026-12-01",
+    capacity: 40,
+    date: "05-11-2026",
     time: "14:00",
-    location: "Kütüphane Seminer Salonu",
-    description: "Büyük veri analizi ve makine öğrenmesi uygulamaları."
-  }
+    location: "Bilgisayar Mühendisliği Lab-1",
+    description: "Modern HTML, CSS ve responsive arayüz geliştirme.",
+  },
+  {
+    title: "Kodlama Yarışması",
+    category: "Diğer",
+    capacity: 80,
+    date: "25-12-2026",
+    time: "09:30",
+    location: "Merkez Kütüphane Çok Amaçlı Salon",
+    description: "Algoritma ve problem çözme maratonu.",
+  },
+  {
+    title: "Yapay Zeka Semineri",
+    category: "Seminer",
+    capacity: 150,
+    date: "17-12-2026",
+    time: "14:00",
+    location: "A Blok Konferans Salonu",
+    description: "Yapay zeka alanındaki son gelişmeler ve kariyer fırsatları.",
+  },
 ];

@@ -1,45 +1,50 @@
 import mongoose from "mongoose";
+import { formatDate, parseDate } from "../utils/date.js";
 
 const eventSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, "title is required"],
       trim: true,
-      minlength: 3,
-      maxlength: 100
     },
     category: {
       type: String,
-      required: true,
-      enum: ["Seminer", "Atölye", "Söyleşi", "Yarışma"]
+      required: [true, "category is required"],
+      enum: ["Seminer", "Atölye", "Konser", "Spor", "Diğer"],
+      trim: true,
     },
     capacity: {
       type: Number,
-      min: 0,
-      default: 0
+      default: 0,
+      min: [0, "capacity cannot be negative"],
     },
     date: {
-      type: String,
-      required: true
+      type: Date,
+      required: [true, "date is required"],
+      set: parseDate,
+      get: formatDate,
     },
     time: {
       type: String,
-      default: ""
+      required: [true, "time is required"],
+      trim: true,
     },
     location: {
       type: String,
+      required: [true, "location is required"],
       trim: true,
-      default: ""
     },
     description: {
       type: String,
+      default: "",
       trim: true,
-      maxlength: 500,
-      default: ""
-    }
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { getters: true, id: false },
+  }
 );
 
 export const Event = mongoose.model("Event", eventSchema);
